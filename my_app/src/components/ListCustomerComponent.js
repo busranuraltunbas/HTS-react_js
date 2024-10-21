@@ -22,11 +22,12 @@ const ListCustomerComponent = () => {
       <Link to = "/add-customer" className='btn btn-primary bn-2'> Müşteri Ekle </Link>
       <table className='table table-bordered table-striped'>
         <thead>
-            <th> Customer Id </th>
-            <th> Customer First Name </th>
-            <th> Customer Last Name </th>
-            <th> Customer Phone Number </th>
-            <th> Customer Address </th>
+            <th> Müşteri Numarası </th>
+            <th> Müşteri Adı </th>
+            <th> Müsteri Soyadı </th>
+            <th> Müşteri Telefon Numarası </th>
+            <th> Müşteri Adresi </th>
+            <th> Durum</th>
         </thead>
         <tbody>
        {customers.map(customer => (
@@ -36,6 +37,9 @@ const ListCustomerComponent = () => {
             <td>{customer.lastName}</td>
             <td>{customer.phone_number}</td>
             <td>{customer.address}</td>
+            <td>
+              <Link className='btn btn-info' to={'/edit-customer/${customer.id}'} > Güncelle </Link>
+            </td>
         </tr>
     ))}        
         </tbody>

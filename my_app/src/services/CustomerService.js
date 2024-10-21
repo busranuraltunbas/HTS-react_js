@@ -12,6 +12,10 @@ class CustomerService{
     createCustomer(customer){
         return axios.post(CUSTOMER_CREATE_BASE_REST_API_URL,customer)
     }
+
+    getCustomerById(customerId){
+        return axios.get(CUSTOMER_BASE_REST_API_URL + '/'+ customerId)
+    }
 }
 
 
