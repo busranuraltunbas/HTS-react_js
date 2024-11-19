@@ -38,7 +38,7 @@ const ListCustomerComponent = () => {
             <td>{customer.phone_number}</td>
             <td>{customer.address}</td>
             <td>
-              <Link className='btn btn-info' to={'/edit-customer/${customer.id}'} > Güncelle </Link>
+              <Link className='btn btn-info' to={`/edit-customer/${customer.id}`} > Güncelle </Link>
             </td>
         </tr>
     ))}        
