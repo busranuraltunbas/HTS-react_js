@@ -8,13 +8,27 @@ const ListCustomerComponent = () => {
   
   useEffect(() => {
 
+    getAllCustomers();
+    
+  }, [])
+
+  const getAllCustomers = () =>{
     CustomerService.getAllCustomers().then((response) =>{
       setCustomers(response.data)
       console.log(response.data);
     }).catch(error => {
       console.log(error);
     })
-  }, [])
+  }
+
+  const deleteCustomer = (customerId) =>{
+    CustomerService.deleteCustomer(customerId).then((response) => {
+      getAllCustomers();
+    
+    }).catch(error =>{
+      console.log(error);
+    })
+  }
 
   return (
     <div className='container'>
@@ -39,6 +53,8 @@ const ListCustomerComponent = () => {
             <td>{customer.address}</td>
             <td>
               <Link className='btn btn-info' to={`/edit-customer/${customer.id}`} > Güncelle </Link>
+              <button className='btn btn-danger' onClick={()=> deleteCustomer(customer.id)}
+                style={{marginLeft : "10px"}}> Sil </button>
             </td>
         </tr>
     ))}        

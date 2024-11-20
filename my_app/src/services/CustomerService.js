@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const CUSTOMER_BASE_REST_API_URL = 'http://localhost:8080/customers';
-const CUSTOMER_UPDATE_REST_API_URL = 'http://localhost:8080/customer';
+const CUSTOMER_REST_API_URL = 'http://localhost:8080/customer';
 const CUSTOMER_CREATE_BASE_REST_API_URL = 'http://localhost:8080/createCustomer';
 
 
@@ -19,7 +19,11 @@ class CustomerService{
     }
 
     updateCustomer(customerId, customer){
-        return axios.put(CUSTOMER_UPDATE_REST_API_URL + '/'+ customerId, customer);
+        return axios.put(CUSTOMER_REST_API_URL + '/'+ customerId, customer);
+    }
+
+    deleteCustomer(customerId){
+        return axios.delete(CUSTOMER_REST_API_URL + '/'+ customerId);
     }
 }
 
