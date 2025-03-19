@@ -5,6 +5,9 @@ import HeaderComponent from './components/HeaderComponent';
 import ListCustomerComponent from './components/ListCustomerComponent';
 import AddCustomerComponent from './components/AddCustomerComponent';
 
+
+import ListAnimalComponent from './components/ListAnimalComponent';
+
 function App() {
   return (
     <div> 
@@ -12,6 +15,8 @@ function App() {
         <HeaderComponent/>
         <div className='container'>
           <Routes>
+
+          <Route exact path='/animal' element={<ListAnimalComponent/>}> </Route>
           
             <Route exact path='/' element={<ListCustomerComponent/>}> </Route>
             <Route path='/customers' element={<ListCustomerComponent/>}> </Route>
