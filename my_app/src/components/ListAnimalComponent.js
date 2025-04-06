@@ -1,8 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import AnimalService from '../services/AnimalService';
 
 const ListAnimalComponent = () => {
 
   const [animals, setAnimals] = useState([])
+
+  useEffect(() => {
+
+    getAllAnimals();
+    
+  }, [])
+
+  const getAllAnimals = () => {
+    AnimalService.getAllAnimals().then((response) => {
+      setAnimals(response.data)
+      console.log(response.data)
+    }).catch( error =>{
+      console.log(error);
+    })
+
+  }
+
 
   return (
     <div className='container'>
@@ -17,7 +35,7 @@ const ListAnimalComponent = () => {
           <th> Kesim Numarası </th>
           <th> Ağırlık </th>
           <th> Fiyat </th>
-          <th> Kişi Sayısı </th>
+          <th> Hisse </th>
           <th> Kurban Olabilir mi? </th>
 
         </thead>
