@@ -32,7 +32,7 @@ const ListCustomerComponent = () => {
 
   return (
     <div className='container'>
-      <h2 className='text-center'>List Customers</h2>
+      <h2 className='text-center'>Müşterilerin Listesi</h2>
       <Link to = "/add-customer" className='btn btn-primary bn-2'> Müşteri Ekle </Link>
       <table className='table table-bordered table-striped'>
         <thead>

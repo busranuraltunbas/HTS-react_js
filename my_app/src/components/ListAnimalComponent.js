@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import AnimalService from '../services/AnimalService';
+import { Link } from 'react-router-dom'
 
 const ListAnimalComponent = () => {
 
@@ -25,6 +26,7 @@ const ListAnimalComponent = () => {
   return (
     <div className='container'>
       <h2 className='text-center'>Hayvanların Listesi</h2>
+      <Link to = "/add-animal" className='btn btn-primary bn-2'> Hayvan Ekle </Link>
       <table className='table table-bordered table-striped'>
         <thead>
 

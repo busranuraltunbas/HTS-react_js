@@ -8,6 +8,8 @@ import AddCustomerComponent from './components/AddCustomerComponent';
 
 import ListAnimalComponent from './components/ListAnimalComponent';
 
+import AddAnimalComponent from './components/AddAnimalComponent';
+
 function App() {
   return (
     <div> 
@@ -17,11 +19,15 @@ function App() {
           <Routes>
 
           <Route exact path='/animal' element={<ListAnimalComponent/>}> </Route>
+
+
           
             <Route exact path='/' element={<ListCustomerComponent/>}> </Route>
             <Route path='/customers' element={<ListCustomerComponent/>}> </Route>
             <Route path='/add-customer' element={<AddCustomerComponent/>}> </Route>
             <Route path='/edit-customer/:id' element={<AddCustomerComponent/>}> </Route>
+
+            <Route path='/add-animal' element={<AddAnimalComponent/>}> </Route>
 
           </Routes>
         </div>
