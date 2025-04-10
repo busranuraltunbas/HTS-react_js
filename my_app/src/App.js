@@ -17,17 +17,15 @@ function App() {
         <HeaderComponent/>
         <div className='container'>
           <Routes>
-
-          <Route exact path='/animal' element={<ListAnimalComponent/>}> </Route>
-
-
           
             <Route exact path='/' element={<ListCustomerComponent/>}> </Route>
             <Route path='/customers' element={<ListCustomerComponent/>}> </Route>
             <Route path='/add-customer' element={<AddCustomerComponent/>}> </Route>
             <Route path='/edit-customer/:id' element={<AddCustomerComponent/>}> </Route>
 
+            <Route exact path='/animals' element={<ListAnimalComponent/>}> </Route>
             <Route path='/add-animal' element={<AddAnimalComponent/>}> </Route>
+            <Route path='/edit-animal/:id' element={<AddAnimalComponent/>}> </Route>
 
           </Routes>
         </div>

@@ -22,6 +22,13 @@ const ListAnimalComponent = () => {
 
   }
 
+  const deleteAnimal = (animalId) =>{
+    AnimalService.deleteAnimal(animalId).then((response) =>{
+      getAllAnimals()
+    }).catch(error =>{
+      console.log(error)
+    })
+  }
 
   return (
     <div className='container'>
@@ -30,6 +37,7 @@ const ListAnimalComponent = () => {
       <table className='table table-bordered table-striped'>
         <thead>
 
+          <th> Hayvan Numarası </th>
           <th> Hayvan Tipi </th>
           <th> Yaşı </th>
           <th> Küpe Numarası </th>
@@ -56,7 +64,13 @@ const ListAnimalComponent = () => {
                   <td> {animal.weight} </td>
                   <td> {animal.price} </td>
                   <td> {animal.share} </td>
-                  <td> {animal.isSale} </td>             
+                  <td> {animal.isSale} </td>    
+
+                  <td>
+                  <Link className='btn btn-info' to={`/edit-animal/${animal.id}`} > Güncelle </Link>
+                  <button className='btn btn-danger' onClick={()=> deleteAnimal(animal.id)}
+                    style={{marginLeft : "10px"}}> Sil </button>
+                  </td>         
 
                 </tr>
             )

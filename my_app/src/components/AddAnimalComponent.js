@@ -39,6 +39,26 @@ const AddAnimalComponent = () => {
     }
 
 
+    useEffect(() => {
+     
+        AnimalService.getAnimalById(id).then((response) =>{
+            setType(response.data.type)           
+            setEarningNumber(response.data.earningNumber)
+            setSalesNumber(response.data.salesNumber)
+            setCutNumber(response.data.cutNumber)
+            setAge(response.data.age)
+            setIsSale(response.data.isSale)            
+            setPrice(response.data.price)
+            setWeight(response.data.weight)
+            setShare(response.data.share)
+               
+            
+        }).catch( error => {
+          console.log(error);
+        })
+      }, [])
+
+
     const title = () => {
         if(id){
           return <h2 className='text-center'> Hayvan Bilgileri Güncelleme </h2>
