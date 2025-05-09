@@ -30,6 +30,7 @@ const ListAnimalComponent = () => {
     })
   }
 
+
   return (
     <div className='container'>
       <h2 className='text-center'>Hayvanların Listesi</h2>
@@ -64,7 +65,8 @@ const ListAnimalComponent = () => {
                   <td> {animal.weight} </td>
                   <td> {animal.price} </td>
                   <td> {animal.share} </td>
-                  <td> {animal.isSale} </td>    
+                  <td> {animal.isSale} </td>   
+
 
                   <td>
                   <Link className='btn btn-info' to={`/edit-animal/${animal.id}`} > Güncelle </Link>

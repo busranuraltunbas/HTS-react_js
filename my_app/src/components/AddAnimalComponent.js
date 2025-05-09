@@ -6,21 +6,36 @@ import AnimalService from '../services/AnimalService';
 const AddAnimalComponent = () => {
 
     const [type, setType] = useState("")
+    const [age, setAge] = useState("")
     const [earningNumber, setEarningNumber] = useState("")
     const [salesNumber, setSalesNumber] = useState("")
     const [cutNumber, setCutNumber] = useState("")
-    const [age, setAge] = useState("")
-    const [isSale, setIsSale] = useState("")
-    const [price, setPrice] = useState("")
     const [weight, setWeight] = useState("")
+    const [price, setPrice] = useState("")
     const [share, setShare] = useState("")
+    //const [isSale, setIsSale] = useState("")
     const navigate = useNavigate();
     const {id} = useParams();
+
+      const [
+        isSale,
+        setIsSale,
+    ] = useState("option1");
+
+    const onOptionChange = (e) => {
+      setIsSale(e.target.value)
+    };
+    
+    /*const handleRadioChange = (
+        value
+    ) => {
+      setIsSale(value);
+    };*/
 
     const saveOrUpdateCustomer = (e) =>{
           e.preventDefault();
         
-            const animal = {type, earningNumber, salesNumber, cutNumber, age, isSale, price, weight, share}
+            const animal = {type, age, earningNumber, salesNumber, cutNumber, weight, price, share, isSale }
             if(id){
                 AnimalService.updateAnimal(id, animal).then((response) =>{
                   navigate('/animals')
@@ -184,16 +199,48 @@ const AddAnimalComponent = () => {
                         </div>
 
                         <div className='form-group mb-2'>
-                            <label className='form-label'> Kurban Olabilir mi </label>
-                            <input
-                            type='text'
-                            placeholder='Kurban Olabilir mi'
-                            name='isSale'
-                            className='form-control'
-                            value={isSale}
-                            onChange={(e)=> setIsSale(e.target.value)}
+                            <label className='form-label'> Kurban Olabilir mi? </label>
+                            <br></br>
+
+
+                          <input
+                          
+                          type="radio"
+                          id="option1"
+                          value="Evet"
+                          checked={
+                            isSale ===
+                              "Evet"
+                          }
+                          onChange={(onOptionChange)}
+                          ></input>
+
+                          <label
+                              htmlFor="option1"                          
+                          >
+                            EVET
+                          </label>
+
+
+                          <input
+                            type="radio"
+                            id="option2"
+                            value="Hayır"
+                            checked={
+                              isSale ===
+                                "Hayır"
+                            }
+                            onChange={(onOptionChange)}
+
                             >                   
                             </input>
+
+                            <label
+                              htmlFor="option2"                          
+                            >
+                              HAYIR
+                            </label>
+                            
                         </div>
 
                        
