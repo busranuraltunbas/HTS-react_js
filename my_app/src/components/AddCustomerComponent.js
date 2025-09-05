@@ -10,15 +10,22 @@ const AddCustomerComponent = () => {
   const [address, setAddress] = useState("")
   const navigate = useNavigate();
   const {id} = useParams();
+  //const [loading, setLoading] = useState(true);
   
 
 
   const saveOrUpdateCustomer = (e) =>{
     e.preventDefault();
 
+    if (!firstName || !lastName || !phone_number || !address) {
+      alert("Lütfen tüm alanları doldurun.");
+      return;
+    }
+
     const customer = {firstName, lastName, phone_number, address}
     if(id){
         CustomerService.updateCustomer(id, customer).then((response) =>{
+          console.log(response.data)
           navigate('/customers')
         }).catch(error =>{
           console.log(error)
@@ -35,17 +42,26 @@ const AddCustomerComponent = () => {
    
   }
 
-  useEffect(() => {
- 
-    CustomerService.getCustomerById(id).then((response) =>{
-        setFirstName(response.data.firstName)
-        setLastName(response.data.lastName)
-        setPhoneNum(response.data.phone_number)
-        setAddress(response.data.address)
-    }).catch( error => {
-      console.log(error);
-    })
-  }, [])
+  
+
+useEffect(() => {
+  if (id) {
+    CustomerService.getCustomerById(id).then((response) => {
+      const customer = response.data;
+      setFirstName(customer.firstName);
+      setLastName(customer.lastName);
+      setPhoneNum(customer.phone_number);
+      setAddress(customer.address);
+    }).catch(error => {
+        console.log(error);
+        //setLoading(false);
+    });
+    } 
+    /*else {
+      setLoading(false);
+    }*/
+  }, [id]);
+
   
   const title = () => {
     if(id){
@@ -69,15 +85,14 @@ const AddCustomerComponent = () => {
                 <form>
                   <div className='form-group mb-2'>
                     <label className='form-label'> İsim </label>
-                    <input
-                      type='text'
-                      placeholder='İsim Giriniz'
-                      name='firstName'
-                      className='form-control'
-                      value={firstName}
-                      onChange={(e)=> setFirstName(e.target.value)}
-                    >                   
-                    </input>
+                 <input
+                    type='text'
+                    placeholder='İsim Giriniz'
+                    name='firstName'
+                    className='form-control'
+                    value={firstName}
+                    onChange={(e)=> setFirstName(e.target.value)}
+                  />
                   </div>
 
                   <div className='form-group mb-2'>

@@ -1,31 +1,27 @@
 import axios from "axios"
 
-const CUSTOMER_BASE_REST_API_URL = 'http://localhost:8080/customers';
-const CUSTOMER_REST_API_URL = 'http://localhost:8080/customer';
-const CUSTOMER_CREATE_BASE_REST_API_URL = 'http://localhost:8080/createCustomer';
+const CUSTOMER_API_BASE_URL = 'http://localhost:8080/customers';
 
+class CustomerService {
+  getAllCustomers() {
+    return axios.get(CUSTOMER_API_BASE_URL);
+  }
 
-class CustomerService{
-    getAllCustomers(){
-        return axios.get(CUSTOMER_BASE_REST_API_URL);
-    }
+  createCustomer(customer) {
+    return axios.post(CUSTOMER_API_BASE_URL, customer);
+  }
 
-    createCustomer(customer){
-        return axios.post(CUSTOMER_CREATE_BASE_REST_API_URL,customer);
-    }
+  getCustomerById(id) {
+    return axios.get(`${CUSTOMER_API_BASE_URL}/${id}`);
+  }
 
-    getCustomerById(customerId){
-        return axios.get(CUSTOMER_BASE_REST_API_URL + '/'+ customerId);
-    }
+  updateCustomer(id, customer) {
+    return axios.put(`${CUSTOMER_API_BASE_URL}/${id}`, customer);
+  }
 
-    updateCustomer(customerId, customer){
-        return axios.put(CUSTOMER_REST_API_URL + '/'+ customerId, customer);
-    }
-
-    deleteCustomer(customerId){
-        return axios.delete(CUSTOMER_REST_API_URL + '/'+ customerId);
-    }
+  deleteCustomer(id) {
+    return axios.delete(`${CUSTOMER_API_BASE_URL}/${id}`);
+  }
 }
-
 
 export default new CustomerService();

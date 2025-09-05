@@ -13,39 +13,33 @@ const AddAnimalComponent = () => {
     const [weight, setWeight] = useState("")
     const [price, setPrice] = useState("")
     const [share, setShare] = useState("")
-    //const [isSale, setIsSale] = useState("")
+    const [isSale, setIsSale] = useState("Evet");
+    
     const navigate = useNavigate();
     const {id} = useParams();
-
-      const [
-        isSale,
-        setIsSale,
-    ] = useState("option1");
 
     const onOptionChange = (e) => {
       setIsSale(e.target.value)
     };
-    
-    /*const handleRadioChange = (
-        value
-    ) => {
-      setIsSale(value);
-    };*/
 
-    const saveOrUpdateCustomer = (e) =>{
+    const saveOrUpdateAnimal = (e) =>{
           e.preventDefault();
-        
-            const animal = {type, age, earningNumber, salesNumber, cutNumber, weight, price, share, isSale }
+          if (!type || !age || !earningNumber) {
+            alert('Lütfen tüm gerekli alanları doldurun.');
+            return;
+          }
+            const animal = {type, age, earningNumber, salesNumber, cutNumber, weight, price, share, isSale: isSale === "Evet" }
             if(id){
-                AnimalService.updateAnimal(id, animal).then((response) =>{
+                AnimalService.updateAnimal(id, animal).then(() =>{
+                  
                   navigate('/animals')
                 }).catch(error =>{
                   console.log(error)
                 })
             }else{
         
-                AnimalService.createAnimal(animal).then((response) => {
-                console.log(response.data)
+                AnimalService.createAnimal(animal).then(() => {
+                
                 navigate('/animals')
               }).catch(error =>{
                 console.log(error)
@@ -55,23 +49,26 @@ const AddAnimalComponent = () => {
 
 
     useEffect(() => {
+      if (id) {
      
         AnimalService.getAnimalById(id).then((response) =>{
-            setType(response.data.type)           
-            setEarningNumber(response.data.earningNumber)
-            setSalesNumber(response.data.salesNumber)
-            setCutNumber(response.data.cutNumber)
-            setAge(response.data.age)
-            setIsSale(response.data.isSale)            
-            setPrice(response.data.price)
-            setWeight(response.data.weight)
-            setShare(response.data.share)
+          const animal = response.data;
+            setType(animal.type)           
+            setEarningNumber(animal.earningNumber)
+            setSalesNumber(animal.salesNumber)
+            setCutNumber(animal.cutNumber)
+            setAge(animal.age)         
+            setIsSale(animal.isSale ? "Evet" : "Hayır");         
+            setPrice(animal.price)
+            setWeight(animal.weight)
+            setShare(animal.share)
                
             
         }).catch( error => {
           console.log(error);
-        })
-      }, [])
+        });
+      }
+      }, [id])
 
 
     const title = () => {
@@ -204,48 +201,29 @@ const AddAnimalComponent = () => {
 
 
                           <input
-                          
-                          type="radio"
-                          id="option1"
-                          value="Evet"
-                          checked={
-                            isSale ===
-                              "Evet"
-                          }
-                          onChange={(onOptionChange)}
-                          ></input>
-
-                          <label
-                              htmlFor="option1"                          
-                          >
-                            EVET
-                          </label>
-
-
-                          <input
                             type="radio"
-                            id="option2"
-                            value="Hayır"
-                            checked={
-                              isSale ===
-                                "Hayır"
-                            }
-                            onChange={(onOptionChange)}
+                            id="option1"
+                            value="Evet"
+                            checked={isSale === "Evet"}
+                            onChange={onOptionChange}
+                          />
+                          <label htmlFor="option1">Evet</label>
 
-                            >                   
-                            </input>
 
-                            <label
-                              htmlFor="option2"                          
-                            >
-                              HAYIR
-                            </label>
+                      <input
+                        type="radio"
+                        id="option2"
+                        value="Hayır"
+                        checked={isSale === "Hayır"}
+                        onChange={onOptionChange}
+                      />
+                      <label htmlFor="option2">Hayır</label>
                             
                         </div>
 
                        
                        
-                       <button className='btn btn-success' onClick={(e) => saveOrUpdateCustomer(e)}> Kaydet </button>
+                       <button className='btn btn-success' onClick={(e) => saveOrUpdateAnimal(e)}> Kaydet </button>
                        <Link to= '/animals' className='btn btn-danger'> Çıkış</Link>
                        </form>
                      </div>

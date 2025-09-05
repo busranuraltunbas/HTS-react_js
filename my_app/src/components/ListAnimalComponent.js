@@ -23,7 +23,7 @@ const ListAnimalComponent = () => {
   }
 
   const deleteAnimal = (animalId) =>{
-    AnimalService.deleteAnimal(animalId).then((response) =>{
+    AnimalService.deleteAnimal(animalId).then(() =>{
       getAllAnimals()
     }).catch(error =>{
       console.log(error)
@@ -37,7 +37,7 @@ const ListAnimalComponent = () => {
       <Link to = "/add-animal" className='btn btn-primary bn-2'> Hayvan Ekle </Link>
       <table className='table table-bordered table-striped'>
         <thead>
-
+       
           <th> Hayvan Numarası </th>
           <th> Hayvan Tipi </th>
           <th> Yaşı </th>
@@ -48,7 +48,7 @@ const ListAnimalComponent = () => {
           <th> Fiyat </th>
           <th> Hisse </th>
           <th> Kurban Olabilir mi? </th>
-
+   
         </thead>
 
         <tbody>
