@@ -31,21 +31,25 @@ const AddAnimalComponent = () => {
             const animal = {type, age, earningNumber, salesNumber, cutNumber, weight, price, share, isSale: isSale === "Evet" }
             if(id){
                 AnimalService.updateAnimal(id, animal).then(() =>{
-                  
+                  alert("Hayvan bilgileri güncellendi ✅");
                   navigate('/animals')
                 }).catch(error =>{
                   console.log(error)
+                  alert("Bir hata oluştu ❌");
                 })
             }else{
         
                 AnimalService.createAnimal(animal).then(() => {
-                
+                alert("Yeni hayvan eklendi ✅");
                 navigate('/animals')
               }).catch(error =>{
                 console.log(error)
+                alert("Bir hata oluştu ❌");
               })
             }
     }
+
+
 
 
     useEffect(() => {
@@ -58,7 +62,8 @@ const AddAnimalComponent = () => {
             setSalesNumber(animal.salesNumber)
             setCutNumber(animal.cutNumber)
             setAge(animal.age)         
-            setIsSale(animal.isSale ? "Evet" : "Hayır");         
+            setIsSale(animal.isSale ? "Evet" : "Hayır");    
+       
             setPrice(animal.price)
             setWeight(animal.weight)
             setShare(animal.share)
@@ -66,6 +71,7 @@ const AddAnimalComponent = () => {
             
         }).catch( error => {
           console.log(error);
+          alert("Hayvan bilgileri alınırken hata oluştu ❌");
         });
       }
       }, [id])

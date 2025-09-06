@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom'
 const ListAnimalComponent = () => {
 
   const [animals, setAnimals] = useState([])
+  const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const animalsPerPage = 5; 
 
   useEffect(() => {
 
@@ -15,26 +18,68 @@ const ListAnimalComponent = () => {
   const getAllAnimals = () => {
     AnimalService.getAllAnimals().then((response) => {
       setAnimals(response.data)
-      console.log(response.data)
+      
     }).catch( error =>{
       console.log(error);
+      alert("Hayvanlar alınırken hata oluştu ❌");
     })
 
   }
 
   const deleteAnimal = (animalId) =>{
-    AnimalService.deleteAnimal(animalId).then(() =>{
-      getAllAnimals()
-    }).catch(error =>{
-      console.log(error)
-    })
-  }
+    if (window.confirm("Bu hayvanı silmek istediğine emin misin?")) {
+      AnimalService.deleteAnimal(animalId).then(() =>{
+        getAllAnimals()
+      }).catch(error =>{
+        console.log(error)
+        alert("Silme sırasında hata oluştu ❌");
+      });
+    }
+  };
+
+
+  // Filtreleme
+  const filteredAnimals = animals.filter(
+    (animal) =>
+      animal.type.toLowerCase().includes(search.toLowerCase()) ||
+      animal.earningNumber.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // Sayfalama hesaplama
+  const indexOfLastAnimal = currentPage * animalsPerPage;
+  const indexOfFirstAnimal = indexOfLastAnimal - animalsPerPage;
+  const currentAnimals = filteredAnimals.slice(
+    indexOfFirstAnimal,
+    indexOfLastAnimal
+  );
+  const totalPages = Math.ceil(filteredAnimals.length / animalsPerPage);
+
+  const changePage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
 
   return (
     <div className='container'>
-      <h2 className='text-center'>Hayvanların Listesi</h2>
-      <Link to = "/add-animal" className='btn btn-primary bn-2'> Hayvan Ekle </Link>
+      <h2 className='text-center'>
+        Hayvanların Listesi
+      </h2>
+
+      {/* Arama kutusu */}
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Hayvan tipi veya küpe numarası ara..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
+
+      <Link to = "/add-animal" className='btn btn-primary bn-2'> 
+        Hayvan Ekle 
+      </Link>
       <table className='table table-bordered table-striped'>
         <thead>
        
@@ -52,33 +97,55 @@ const ListAnimalComponent = () => {
         </thead>
 
         <tbody>
-          {
-            animals.map(
-              animal =>
-                <tr key={animal.id}>
-                  <td> {animal.id} </td>
-                  <td> {animal.type} </td>
-                  <td> {animal.age} </td>
-                  <td> {animal.earningNumber}</td>
-                  <td> {animal.salesNumber} </td>
-                  <td> {animal.cutNumber} </td>
-                  <td> {animal.weight} </td>
-                  <td> {animal.price} </td>
-                  <td> {animal.share} </td>
-                  <td> {animal.isSale} </td>   
-
-
-                  <td>
-                  <Link className='btn btn-info' to={`/edit-animal/${animal.id}`} > Güncelle </Link>
-                  <button className='btn btn-danger' onClick={()=> deleteAnimal(animal.id)}
-                    style={{marginLeft : "10px"}}> Sil </button>
-                  </td>         
-
-                </tr>
-            )
-          }
+          {currentAnimals.map((animal, index) => (
+            <tr key={animal.id}>
+              <td>{indexOfFirstAnimal + index + 1}</td> {/* 1'den başlayan sıra */}
+              <td>{animal.type}</td>
+              <td>{animal.age}</td>
+              <td>{animal.earningNumber}</td>
+              <td>{animal.salesNumber}</td>
+              <td>{animal.cutNumber}</td>
+              <td>{animal.weight}</td>
+              <td>{animal.price}</td>
+              <td>{animal.share}</td>
+              <td>{animal.isSale ? "Evet" : "Hayır"}</td>
+              <td>
+                <Link className="btn btn-info" to={`/edit-animal/${animal.id}`}>
+                  Güncelle
+                </Link>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => deleteAnimal(animal.id)}
+                  style={{ marginLeft: "10px" }}
+                >
+                  Sil
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
+
+      {/* Sayfalama butonları */}
+      <nav>
+        <ul className="pagination justify-content-center">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <li
+              key={index}
+              className={`page-item ${
+                currentPage === index + 1 ? "active" : ""
+              }`}
+            >
+              <button
+                className="page-link"
+                onClick={() => changePage(index + 1)}
+              >
+                {index + 1}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   )
 }
