@@ -22,6 +22,12 @@ class CustomerService {
   deleteCustomer(id) {
     return axios.delete(`${CUSTOMER_API_BASE_URL}/${id}`);
   }
+
+   // Soft delete (DELETE endpoint çağrılır)
+  softDeleteCustomer(id) {
+      return axios.delete(`${CUSTOMER_API_BASE_URL}/${id}`);
+  }
+
 }
 
 export default new CustomerService();

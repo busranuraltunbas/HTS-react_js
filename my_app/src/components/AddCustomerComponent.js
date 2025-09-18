@@ -24,19 +24,21 @@ const AddCustomerComponent = () => {
 
     const customer = {firstName, lastName, phone_number, address}
     if(id){
-        CustomerService.updateCustomer(id, customer).then((response) =>{
-          console.log(response.data)
+        CustomerService.updateCustomer(id, customer).then(() =>{
+          alert("Müşteri bilgileri güncellendi ✅");
           navigate('/customers')
         }).catch(error =>{
           console.log(error)
+          alert("Bir hata oluştu ❌");
         })
     }else{
 
-      CustomerService.createCustomer(customer).then((response) => {
-        console.log(response.data)
-        navigate('/customers')
+      CustomerService.createCustomer(customer).then(() => {
+        alert("Yeni müşteri eklendi ✅");
+        navigate('/customers')       
       }).catch(error =>{
         console.log(error)
+        alert("Bir hata oluştu ❌");
       })
     }
    

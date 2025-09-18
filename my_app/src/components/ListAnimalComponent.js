@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import AnimalService from '../services/AnimalService';
+import AnimalService from '../services/AnimalService'
 import { Link } from 'react-router-dom'
+
 
 const ListAnimalComponent = () => {
 
   const [animals, setAnimals] = useState([])
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [showDeleted, setShowDeleted] = useState(false);
   const animalsPerPage = 5; 
 
   useEffect(() => {
 
-    getAllAnimals();
+    loadAnimals();
     
-  }, [])
+  }, [showDeleted])
 
   const getAllAnimals = () => {
     AnimalService.getAllAnimals().then((response) => {
@@ -23,17 +25,37 @@ const ListAnimalComponent = () => {
       console.log(error);
       alert("Hayvanlar alınırken hata oluştu ❌");
     })
-
   }
 
-  const deleteAnimal = (animalId) =>{
+const loadAnimals = () => {
+    if (showDeleted) {
+      AnimalService.getDeletedAnimals()
+        .then((response) => setAnimals(response.data))
+        .catch((error) => {
+          console.log(error);
+          alert("Silinen hayvanlar alınırken hata oluştu ❌");
+        });
+    } else {
+      AnimalService.getAllAnimals()
+        .then((response) => setAnimals(response.data))
+        .catch((error) => {
+          console.log(error);
+          alert("Hayvanlar alınırken hata oluştu ❌");
+        });
+    }
+  };
+
+   // Soft delete 
+  const deleteAnimal = (animalId) => {
     if (window.confirm("Bu hayvanı silmek istediğine emin misin?")) {
-      AnimalService.deleteAnimal(animalId).then(() =>{
-        getAllAnimals()
-      }).catch(error =>{
-        console.log(error)
-        alert("Silme sırasında hata oluştu ❌");
-      });
+      AnimalService.softDeleteAnimal(animalId)
+        .then(() => {
+          getAllAnimals(); // listeyi yenile
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Silme sırasında hata oluştu ❌");
+        });
     }
   };
 
@@ -61,8 +83,8 @@ const ListAnimalComponent = () => {
 
   return (
     <div className='container'>
-      <h2 className='text-center'>
-        Hayvanların Listesi
+     <h2 className='text-center'>
+        {showDeleted ? "Silinmiş Hayvanların Listesi" : "Hayvanların Listesi"}
       </h2>
 
       {/* Arama kutusu */}
@@ -77,10 +99,20 @@ const ListAnimalComponent = () => {
       </div>
 
 
-      <Link to = "/add-animal" className='btn btn-primary bn-2'> 
-        Hayvan Ekle 
-      </Link>
-      <table className='table table-bordered table-striped'>
+           {/* Butonlar */}
+      <div className="mb-3 d-flex gap-2">
+        <Link to="/add-animal" className='btn btn-primary'>
+          Hayvan Ekle
+        </Link>
+        <button
+          className="btn btn-secondary"
+          onClick={() => setShowDeleted(!showDeleted)} // ✅ toggle
+        >
+          {showDeleted ? "Aktifleri Göster" : "Silinenleri Göster"}
+        </button>
+      </div>
+ 
+        <table className="table table-striped table-hover table-custom">
         <thead>
        
           <th> Hayvan Numarası </th>
@@ -93,7 +125,7 @@ const ListAnimalComponent = () => {
           <th> Fiyat </th>
           <th> Hisse </th>
           <th> Kurban Olabilir mi? </th>
-   
+          <th> Durum</th>
         </thead>
 
         <tbody>
@@ -110,6 +142,10 @@ const ListAnimalComponent = () => {
               <td>{animal.share}</td>
               <td>{animal.isSale ? "Evet" : "Hayır"}</td>
               <td>
+
+                {!showDeleted && (
+                  <>
+
                 <Link className="btn btn-info" to={`/edit-animal/${animal.id}`}>
                   Güncelle
                 </Link>
@@ -120,6 +156,11 @@ const ListAnimalComponent = () => {
                 >
                   Sil
                 </button>
+
+                    </>
+                )}
+                {showDeleted && <span className="text-muted">Silinmiş</span>}
+
               </td>
             </tr>
           ))}

@@ -23,5 +23,15 @@ class AnimalService{
         return axios.delete(`${ANIMAL_API_BASE_URL}/${id}`);
     }
 
+    // Soft delete (DELETE endpoint çağrılır)
+    softDeleteAnimal(id) {
+        return axios.delete(`${ANIMAL_API_BASE_URL}/${id}`);
+    }
+
+    getDeletedAnimals() {
+        return axios.get(`${ANIMAL_API_BASE_URL}/deleted`);
+    }
+    
+
 } 
 export default new AnimalService()

@@ -24,17 +24,21 @@ const ListCustomerComponent = () => {
     })
   }
 
-  const deleteCustomer = (customerId) =>{
-    if (window.confirm("Bu müşteriyi silmek istediğine emin misin?")) {
-      CustomerService.deleteCustomer(customerId).then(() => {
-        getAllCustomers();
-      
-      }).catch(error =>{
-        console.log(error);
-        alert("Silme sırasında hata oluştu ❌");
-      })
-    }
-  }
+     // Soft delete 
+    const deleteCustomer = (animalId) => {
+      if (window.confirm("Bu hayvanı silmek istediğine emin misin?")) {
+        CustomerService.softDeleteCustomer(animalId)
+          .then(() => {
+            getAllCustomers(); // listeyi yenile
+          })
+          .catch((error) => {
+            console.log(error);
+            alert("Silme sırasında hata oluştu ❌");
+          });
+      }
+    };
+
+
 
   // Arama
   const filteredCustomers = customers.filter(
@@ -76,8 +80,8 @@ const ListCustomerComponent = () => {
       <Link to = "/add-customer" className='btn btn-primary bn-2'> 
         Müşteri Ekle 
       </Link>
-
-      <table className='table table-bordered table-striped'>
+      
+      <table className="table table-striped table-hover table-custom">
         <thead>
             <th> Müşteri Numarası </th>
             <th> Müşteri Adı </th>

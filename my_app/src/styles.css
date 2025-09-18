@@ -1,0 +1,12 @@
+/* Genel ayarlar (hayvan + müşteri tabloları) */
+.table-custom th,
+.table-custom td {
+  border: 1px solid #dee2e6;
+  padding: 8px 12px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px;
+  white-space: nowrap;
+  
+  table-layout: fixed; /* 🔑 sütun genişliklerini sabitler */
+}
