@@ -28,6 +28,10 @@ class CustomerService {
       return axios.delete(`${CUSTOMER_API_BASE_URL}/${id}`);
   }
 
+   getDeletedCustomers() {
+        return axios.get(`${CUSTOMER_API_BASE_URL}/deleted`);
+    }
+
 }
 
 export default new CustomerService();

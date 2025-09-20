@@ -99,7 +99,7 @@ const loadAnimals = () => {
       </div>
 
 
-           {/* Butonlar */}
+      {/* Butonlar */}
       <div className="mb-3 d-flex gap-2">
         <Link to="/add-animal" className='btn btn-primary'>
           Hayvan Ekle

@@ -7,13 +7,15 @@ const ListCustomerComponent = () => {
   const [customers, setCustomers] = useState([])
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [showDeleted, setShowDeleted] = useState(false);
   const customersPerPage = 5;
 
   useEffect(() => {
 
-    getAllCustomers();
+    //getAllCustomers();
+    loadCustomers();
     
-  }, [])
+  }, [showDeleted])
 
   const getAllCustomers = () =>{
     CustomerService.getAllCustomers().then((response) =>{
@@ -24,10 +26,28 @@ const ListCustomerComponent = () => {
     })
   }
 
+  const loadCustomers = () => {
+      if (showDeleted) {
+        CustomerService.getDeletedCustomers()
+          .then((response) => setCustomers(response.data))
+          .catch((error) => {
+            console.log(error);
+            alert("Silinen müşteriler alınırken hata oluştu ❌");
+          });
+      } else {
+        CustomerService.getAllCustomers()
+          .then((response) => setCustomers(response.data))
+          .catch((error) => {
+            console.log(error);
+            alert("Müşteriler alınırken hata oluştu ❌");
+          });
+      }
+    };
+
      // Soft delete 
-    const deleteCustomer = (animalId) => {
+    const deleteCustomer = (customerId) => {
       if (window.confirm("Bu hayvanı silmek istediğine emin misin?")) {
-        CustomerService.softDeleteCustomer(animalId)
+        CustomerService.softDeleteCustomer(customerId)
           .then(() => {
             getAllCustomers(); // listeyi yenile
           })
@@ -63,7 +83,7 @@ const ListCustomerComponent = () => {
   return (
     <div className='container'>
       <h2 className='text-center'>
-        Müşterilerin Listesi
+        {showDeleted ? "Silinmiş Müşterilerin Listesi" : "Müşterilerin Listesi"}
       </h2>
 
       {/* Arama */}
@@ -77,9 +97,18 @@ const ListCustomerComponent = () => {
         />
       </div>
 
-      <Link to = "/add-customer" className='btn btn-primary bn-2'> 
-        Müşteri Ekle 
-      </Link>
+      {/* Butonlar */}
+            <div className="mb-3 d-flex gap-2">
+              <Link to="/add-customer" className='btn btn-primary'>
+                Müşteri Ekle
+              </Link>
+              <button
+                className="btn btn-secondary"
+                onClick={() => setShowDeleted(!showDeleted)} // ✅ toggle
+              >
+                {showDeleted ? "Aktifleri Göster" : "Silinenleri Göster"}
+              </button>
+            </div>
       
       <table className="table table-striped table-hover table-custom">
         <thead>
@@ -99,11 +128,25 @@ const ListCustomerComponent = () => {
             <td>{customer.phone_number}</td>
             <td>{customer.address}</td>
             <td>
-              <Link className='btn btn-info' to={`/edit-customer/${customer.id}`} > 
-                Güncelle    
-              </Link>
-              <button className='btn btn-danger' onClick={()=> deleteCustomer(customer.id)}
-                style={{marginLeft : "10px"}}> Sil </button>
+
+                    {!showDeleted && (
+                      <>
+    
+                    <Link className="btn btn-info" to={`/edit-customer/${customer.id}`}>
+                      Güncelle
+                    </Link>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => deleteCustomer(customer.id)}
+                      style={{ marginLeft: "10px" }}
+                    >
+                      Sil
+                    </button>
+    
+                        </>
+                    )}
+                    {showDeleted && <span className="text-muted">Silinmiş</span>}
+
             </td>
         </tr>
     ))}        
